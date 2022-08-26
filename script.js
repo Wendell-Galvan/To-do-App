@@ -12,50 +12,37 @@
 // Also, you can use JavaScript to add an "onclick" attribute to elements you're using JavaScript to create. 
 // This may be of note when thinking of how to delete the todo element. 
 
-// let inputField = document.getElementById("myInput");
-// const addButton = document.getElementById("addBtn");
-// let myList = document.getElementById("myList");
+let inputField = document.getElementById("myInput");
+const addButton = document.getElementById("addBtn");
+let myList = document.getElementById("myList");
 
+let todoArray = [];
 
-
-
-// function addItem(){
-// 	let toDoArray = [];
-// 	let listItem = document.createElement("li");
-	
-//   	listItem.innerText = inputField.value;
-//   	let newTask = listItem.innerText;
-// 	toDoArray.push(newTask);
-//   	// console.log(newTask);
-//   	console.log(toDoArray);
-
-//   	myList.appendChild(listItem);
-//   	inputField.value = "";
-//   	listItem.addEventListener('click', function(){
-//   		listItem.style.textDecoration = "line-through";
-//   	})
-// }
-
-let todoItems = [];
-
-function addTodo(text) {
+function addTodo(inputField) {
   const todo = {
-    text,
-    checked: false,
+    inputField,
     id: Date.now(),
   };
 
-  todoItems.push(todo);
-  console.log(todoItems);
+  todoArray.push(todo);
 }
 
-function addItem(){
-	const input = document.getElementById("myInput");
 
-	const text = input.value.trim();
-	  if (text !== '') {
-	    addTodo(text);
-	    input.value = '';
-	    input.focus();
-	  }
+function addItem(){
+	let listItem = document.createElement("li");
+	
+  	if (inputField.value == ""){
+		alert("Please enter a task");
+		return false;
+	} else {
+		listItem.innerText = inputField.value;
+		myList.appendChild(listItem);
+		addTodo(inputField);
+  	inputField.value = "";
+  	listItem.addEventListener('click', function(){
+  		listItem.style.textDecoration = "line-through";
+  	});
+	}
+
+  	console.log(todoArray);
 }
