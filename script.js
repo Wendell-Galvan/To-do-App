@@ -12,37 +12,99 @@
 // Also, you can use JavaScript to add an "onclick" attribute to elements you're using JavaScript to create. 
 // This may be of note when thinking of how to delete the todo element. 
 
-let inputField = document.getElementById("myInput");
-const addButton = document.getElementById("addBtn");
-let myList = document.getElementById("myList");
 
-let todoArray = [];
+//select elements 
+const form = document.getElementById('todoform');
+const todoInput = document.getElementById('newtodo');
+const todosListEl = document.getElementById('todos-list');
 
-function addTodo(inputField) {
-  const todo = {
-    inputField,
-    id: Date.now(),
-  };
+//variables
+let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
-  todoArray.push(todo);
+// 1st render
+renderTodos();
+
+//Form submit 
+form.addEventListener('submit', function (event){
+	event.preventDefault();
+
+	saveTodo();
+	renderTodos();
+	localStorage.setItem('todos', JSON.stringify(todos));
+})
+
+//save todo
+function saveTodo(){
+  const todoValue = todoInput.value;
+
+  //check if todo empty
+  if (todoValue === ''){
+  	alert("Please enter a todo item");
+  } else {
+  	const todo = {
+	  	value: todoValue,
+	  	checked: false,
+	  	id: Date.now()
+  	};
+
+  	todos.push(todo);
+  	todoInput.value = '';
+
+  }
 }
 
+//render todos
+function renderTodos(){
+	//clear element before re-render
+	todosListEl.innerHTML = '';
 
-function addItem(){
-	let listItem = document.createElement("li");
-	
-  	if (inputField.value == ""){
-		alert("Please enter a task");
-		return false;
-	} else {
-		listItem.innerText = inputField.value;
-		myList.appendChild(listItem);
-		addTodo(inputField);
-  	inputField.value = "";
-  	listItem.addEventListener('click', function(){
-  		listItem.style.textDecoration = "line-through";
-  	});
-	}
+  todos.forEach((todo, index) => {
+  	todosListEl.innerHTML += `
+  	<div class="todo" id=${index}>			
+		<i class="bi ${todo.checked ? 'bi-check-circle-fill' : 'bi-circle'}" data-action="check"></i>	
+		<p class="${todo.checked ? 'checked' : ''}" data-action="check">${todo.value}</p>
+		<i class="bi bi-trash" data-action="delete"></i>
+	</div>
+  	`;
+  });
+}
 
-  	console.log(todoArray);
+//Click event listener for todos
+todosListEl.addEventListener('click', (event) => {
+	const target = event.target;
+	const parentElement = target.parentNode;
+
+	if(parentElement.className !== 'todo') return;
+
+	// todo id
+	const todo = parentElement;
+	const todoId = Number(todo.id);
+
+	// target action 
+	const action = target.dataset.action;
+
+	action === "check" && checkTodo(todoId);
+	action === "delete" && deleteTodo(todoId);
+
+})
+
+// check todo function 
+function checkTodo(todoId){
+	todos = todos.map((todo, index) => ({
+			value: todo.value,
+			checked: index === todoId ? !todo.checked : todo.checked,
+			id: todo.id
+		}));
+
+	renderTodos();
+	localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+// delete todo function 
+function deleteTodo(todoId){
+	todos = todos.filter((todo, index) => index !== todoId);
+
+	// re-render todos
+	renderTodos();
+	localStorage.setItem('todos', JSON.stringify(todos));
 }
