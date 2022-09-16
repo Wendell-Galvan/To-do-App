@@ -132,4 +132,4 @@ if (localStorage.getItem('todos') === null){
      })
 }
 
-localStorage.setItem('todos', JSON.stringify(todos));
+// localStorage.setItem('todos', JSON.stringify(todos));
