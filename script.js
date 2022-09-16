@@ -12,6 +12,7 @@
 // Also, you can use JavaScript to add an "onclick" attribute to elements you're using JavaScript to create. 
 // This may be of note when thinking of how to delete the todo element. 
 
+// const axios = require('axios').default;
 
 //select elements 
 const form = document.getElementById('todoform');
@@ -108,3 +109,27 @@ function deleteTodo(todoId){
 	renderTodos();
 	localStorage.setItem('todos', JSON.stringify(todos));
 }
+
+// if (localStorage.getItem('todos') === null){
+// 	for (let i = 0; i < 5; i++){
+// 		axios.get('https://jsonplaceholder.typicode.com/todos')
+//      .then(response => {
+//             todos.push(response.data[i].title);	
+//         })
+// 	}
+
+// 	localStorage.setItem('todos', JSON.stringify(todos));
+	
+// }
+
+if (localStorage.getItem('todos') === null){
+	axios.get('https://jsonplaceholder.typicode.com/todos')
+     .then(response => {   
+	     	for (let i = 0; i < 5; i++){
+	     		todos.push(response.data[i].title)
+	     	}      
+	     	console.log(todos);  	
+     })
+}
+
+localStorage.setItem('todos', JSON.stringify(todos));
