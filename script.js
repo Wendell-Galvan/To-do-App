@@ -110,26 +110,16 @@ function deleteTodo(todoId){
 	localStorage.setItem('todos', JSON.stringify(todos));
 }
 
-// if (localStorage.getItem('todos') === null){
-// 	for (let i = 0; i < 5; i++){
-// 		axios.get('https://jsonplaceholder.typicode.com/todos')
-//      .then(response => {
-//             todos.push(response.data[i].title);	
-//         })
-// 	}
 
-// 	localStorage.setItem('todos', JSON.stringify(todos));
-	
-// }
 
 if (localStorage.getItem('todos') === null){
 	axios.get('https://jsonplaceholder.typicode.com/todos')
-     .then(response => {   
+     .then(response => { 
 	     	for (let i = 0; i < 5; i++){
 	     		todos.push(response.data[i].title)
-	     	}      
-	     	console.log(todos);  	
+	     		localStorage.setItem('todos', JSON.stringify(todos));
+	     		console.log(todos); 	
+	     	} 
      })
 }
 
-// localStorage.setItem('todos', JSON.stringify(todos));
