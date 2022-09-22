@@ -126,6 +126,7 @@ if (localStorage.getItem('todos') === null){
 	     		console.log(todos); 	
 	     	} 
 	     	localStorage.setItem('todos', JSON.stringify(todos));
+	     	renderTodos();
      })
 }
 
