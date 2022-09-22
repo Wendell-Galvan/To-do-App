@@ -42,7 +42,7 @@ function saveTodo(){
   if (todoValue === ''){
   	alert("Please enter a todo item");
   } else {
-  	const todo = {
+  	let todo = {
 	  	value: todoValue,
 	  	checked: false,
 	  	id: Date.now()
@@ -116,10 +116,16 @@ if (localStorage.getItem('todos') === null){
 	axios.get('https://jsonplaceholder.typicode.com/todos')
      .then(response => { 
 	     	for (let i = 0; i < 5; i++){
-	     		todos.push(response.data[i].title)
-	     		localStorage.setItem('todos', JSON.stringify(todos));
+	     	  todo = {
+				  	value: response.data[i].title,
+				  	checked: false,
+				  	id: Date.now()
+			  	};
+
+	     		todos.push(todo);
 	     		console.log(todos); 	
 	     	} 
+	     	localStorage.setItem('todos', JSON.stringify(todos));
      })
 }
 
